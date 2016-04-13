@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{455F0A35-64DD-0772-94F2-52A6291AB819}") = "Coaster", "Assembly-CSharp.csproj", "{FF165115-8092-9EA2-42CC-5D76E6C3C58F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF165115-8092-9EA2-42CC-5D76E6C3C58F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF165115-8092-9EA2-42CC-5D76E6C3C58F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF165115-8092-9EA2-42CC-5D76E6C3C58F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF165115-8092-9EA2-42CC-5D76E6C3C58F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal

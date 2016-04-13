@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class PlayerMovement : MonoBehaviour {
+
+	public float movementForce;
+
+	private Rigidbody2D playerRb;
+
+	// Use this for initialization
+	void Start () {
+	
+		playerRb = gameObject.GetComponent<Rigidbody2D> ();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+		playerRb.AddForce (new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0).normalized * movementForce);
+	}
+}
