@@ -133,6 +133,13 @@ public class GenerateTrack : MonoBehaviour {
 		{
 			lastPiecePos = new Vector3 (lastPiecePos.x + Random.Range (minGapWidth, maxGapWidth), lastPiecePos.y + Random.Range (minGapHeight, maxGapHeight), 0);
 
+			if (prevGeneratedPiece != null)
+			{
+				prevGeneratedPiece.GetComponent<DestroyTrack> ().lastGeneratedPiece = false;
+			}
+
+			prevGeneratedPiece = null;
+
 			readyForNewPiece = true;
 
 			yield break;
@@ -204,7 +211,9 @@ public class GenerateTrack : MonoBehaviour {
 
 		GameObject newCurvePiece = new GameObject ();
 
+		newCurvePiece.layer = 8; //Track layer
 
+		CurveInfo newCurveInfo = newCurvePiece.AddComponent<CurveInfo> ();
 
 		DestroyTrack newDestroyTrack = newCurvePiece.AddComponent<DestroyTrack> ();
 
@@ -219,6 +228,8 @@ public class GenerateTrack : MonoBehaviour {
 		if (prevGeneratedPiece != null)
 		{
 			prevGeneratedPiece.GetComponent<DestroyTrack> ().lastGeneratedPiece = false;
+
+			prevGeneratedPiece.GetComponent<CurveInfo> ().nextTrackPiece = newCurvePiece;
 		}
 
 		newDestroyTrack.lastGeneratedPiece = true;
@@ -234,6 +245,8 @@ public class GenerateTrack : MonoBehaviour {
 
 
 		EdgeCollider2D edgeCollider = newCurvePiece.AddComponent<EdgeCollider2D> ();
+
+		edgeCollider.isTrigger = true;
 
 		Vector2[] edgePoints = new Vector2[newCurvePieceMesh.vertices.Length/2];
 

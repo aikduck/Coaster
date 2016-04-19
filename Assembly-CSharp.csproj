@@ -46,9 +46,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
+     <Compile Include="Assets\Scripts\CoasterControl.cs" />
+     <Compile Include="Assets\Scripts\CurveInfo.cs" />
      <Compile Include="Assets\Scripts\DestroyTrack.cs" />
      <Compile Include="Assets\Scripts\GenerateCurveMesh.cs" />
      <Compile Include="Assets\Scripts\GenerateTrack.cs" />
+     <Compile Include="Assets\Scripts\PlayerCOM.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\TrackManager.cs" />
      <Compile Include="Assets\Scripts\Triangulator.cs" />
