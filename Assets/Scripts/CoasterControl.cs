@@ -10,6 +10,10 @@ public class CoasterControl : MonoBehaviour {
 	public float detectDistance;
 	public float moveSpeed;
 
+	public float offTrackSpeedX;
+
+	public float rotateToFlatSpeed;
+
 	public LayerMask trackLayerMask;
 
 	public GenerateTrack generateTrack;
@@ -27,6 +31,8 @@ public class CoasterControl : MonoBehaviour {
 	private Vector3 prevPoint;
 	private int currentPointIndex;
 
+	private float initialPosZ = 0;
+
 	private float prevHitDist = 0;
 
 	private float curveVerticeDistance;
@@ -35,12 +41,16 @@ public class CoasterControl : MonoBehaviour {
 
 	private Stopwatch stopWatch;
 
+	private Stopwatch rotateStopWatch;
+
 	private Rigidbody2D playerRb;
 
 	// Use this for initialization
 	void Start () {
 	
 		stopWatch = new Stopwatch ();
+
+		rotateStopWatch = new Stopwatch ();
 
 		playerRb = gameObject.GetComponent<Rigidbody2D> ();
 
@@ -51,6 +61,33 @@ public class CoasterControl : MonoBehaviour {
 	void Update () {
 	
 		DetectTrackBelow ();
+		if (onTrack == false) 
+		{
+			if (rotateStopWatch.IsRunning) {
+
+				if ((rotateStopWatch.ElapsedMilliseconds / rotateToFlatSpeed) >= 1) {
+					rotateStopWatch.Stop ();
+
+					transform.right = Vector3.right;
+				} else {
+
+
+					float zAngle = Mathf.LerpAngle (initialPosZ, 0, rotateStopWatch.ElapsedMilliseconds / rotateToFlatSpeed);
+
+					print ("rotate " + zAngle);
+
+					transform.eulerAngles = new Vector3 (0, 0, zAngle);
+				}
+			}
+		}
+	}
+
+	void FixedUpdate()
+	{
+		if (onTrack == false) 
+		{
+			MoveOffTrack ();
+		}
 	}
 
 	void DetectTrackBelow()
@@ -61,10 +98,8 @@ public class CoasterControl : MonoBehaviour {
 
 			UnityEngine.Debug.DrawRay (raycastOrigin.transform.position, Vector3.down * raycastDistance, Color.blue);
 
-			if (hit.collider != null ) 
-			{
-				if (hit.distance <= detectDistance && (hit.distance < prevHitDist && prevHitDist >= detectDistance)) 
-				{
+			if (hit.collider != null) {
+				if (hit.distance <= detectDistance && (hit.distance < prevHitDist && prevHitDist >= detectDistance)) {
 					currentTrack = hit.collider.gameObject;
 
 					initialPosition = new Vector3 (hit.point.x, hit.point.y, 0);
@@ -99,12 +134,19 @@ public class CoasterControl : MonoBehaviour {
 					stopWatch.Start ();
 				}
 
+
 				prevHitDist = hit.distance;
-			}
-			else if (prevHitDist != 0)
+			} 
+			else 
 			{
-				prevHitDist = 0;
+				if (prevHitDist != 0)
+				{
+					prevHitDist = 0;
+				}
 			}
+
+
+
 		}
 		else
 		{
@@ -164,6 +206,11 @@ public class CoasterControl : MonoBehaviour {
 		}
 	}
 
+	void MoveOffTrack()
+	{
+		transform.Translate (Vector3.right * offTrackSpeedX);
+	}
+
 	void SetOnTrack()
 	{
 		playerRb.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -173,7 +220,12 @@ public class CoasterControl : MonoBehaviour {
 
 	void SetOffTrack()
 	{
-		playerRb.constraints = RigidbodyConstraints2D.None;
+		playerRb.constraints = RigidbodyConstraints2D.FreezePositionX;
+
+		rotateStopWatch.Reset ();
+		rotateStopWatch.Start ();
+
+		initialPosZ = transform.eulerAngles.z;
 
 		onTrack = false;
 	}

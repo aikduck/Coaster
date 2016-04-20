@@ -14,8 +14,8 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 	
-		playerRb.AddForce (new Vector3 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"), 0).normalized * movementForce);
+		playerRb.AddForce (new Vector3 (0, Input.GetAxis ("Vertical"), 0).normalized * movementForce);
 	}
 }
